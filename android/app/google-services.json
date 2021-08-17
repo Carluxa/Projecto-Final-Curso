@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "160698082032",
+    "project_id": "projecto-licenciatura",
+    "storage_bucket": "projecto-licenciatura.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:160698082032:android:26f5d284a270025f2f9835",
+        "android_client_info": {
+          "package_name": "com.example.projecto_licenciatura"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "160698082032-4pbsqbl3r2e1haao1kiig10khqn9v4hj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOcaOj4J6EGAubOyVjNYmpq65UBeJC6TQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "160698082032-4pbsqbl3r2e1haao1kiig10khqn9v4hj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
