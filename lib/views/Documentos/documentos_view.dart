@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_icons/flutter_icons.dart';
 import 'package:projecto_licenciatura/views/Documentos/PDF_view.dart';
 import 'package:projecto_licenciatura/controllers/pdf_api.dart';
+import 'package:projecto_licenciatura/views/Documentos/TextDocuments.dart';
 import 'package:projecto_licenciatura/views/constantsFields.dart';
 import 'package:projecto_licenciatura/views/Login/Setup_login/signIn.dart';
 
@@ -23,7 +24,6 @@ class document_view extends StatefulWidget{
     throw UnimplementedError();
   }
 
-  @override
   // TODO: implement context
   BuildContext get context => throw UnimplementedError();
 
@@ -95,6 +95,7 @@ class _document_viewState extends State<document_view> {
         print("O errro do document $e");
       }
   }
+
 
   AnimationController _controller;
 
@@ -178,12 +179,22 @@ class _document_viewState extends State<document_view> {
                                               ),
                                               clipBehavior: Clip.antiAlias,
                                               color: Colors.grey[100],
-                                              child: GestureDetector(
-                                                onTap: () async {
-                                                  final path = 'assets/documents/PassosTerreno.pdf';
-                                                  final file = await PDFApi
-                                                      .loadAsset( path );
-                                                  openPDF( context, file );
+                                              child: InkWell(
+                                                onTap: () {
+                                                  Navigator.push(context,MaterialPageRoute(builder: (_) =>
+                                              TextDocuments(
+                                                    textTitle: "Legalização de um terreno",
+                                                    text2: "",
+                                                    titletext1: "Passos a Seguir\n",
+                                                    titletext2: "",
+                                                    text1: "Diagrama que explica qual é a sequência de acções a seguir para a legalização de um terreno de uma forma geral, nos campos as seguir explica detalhadamente os cada processo",
+                                                    onpressedPdf: () async{
+                                                    final path = 'assets/documents/PassosTerreno.pdf';
+                                                    final file = await PDFApi
+                                                        .loadAsset( path );
+                                                    openPDF(context, file );
+                                                  },
+                                                 )));
                                                 },
                                                 child:
                                                 Column(
@@ -204,12 +215,21 @@ class _document_viewState extends State<document_view> {
                                               clipBehavior: Clip.antiAlias,
                                               color: Colors.grey[100],
                                               child:
-                                              GestureDetector(
+                                              InkWell(
                                                 onTap: () async {
-                                                  final path = 'assets/documents/DUAT.pdf';
-                                                  final file = await PDFApi
-                                                      .loadAsset( path );
-                                                  openPDF( context, file );
+                                                  Navigator.push(context, MaterialPageRoute(builder: (_) => TextDocuments(
+                                                    textTitle: "DUAT",
+                                                    titletext1: "Direito de Uso e Aproveitamento de Terra",
+                                                    text1:"A taxa referente ao Direito de uso e aproveitamento de terra, a autorização definitiva são de 300 meticais.",
+                                                    titletext2: "Conteúdo do DUAT",
+                                                    text2:"a)Documento de identificação do requerente, se for pessoa singular, e Estatutos, no caso de se tratar de pessoa colectiva;\n\nb)	Esboço da localização do terreno;\n\nc)	Memória descritiva;\n\nd)	Indicação da natureza e dimensão do empreendimento que o requerente se propõe realizar;\n\ne)	Parecer do administrador do Distrito, precedido de consulta à comunidade local;\n\nf)	Edital e comprovativo da sua afixação na sede do respectivo distrito e no próprio local, durante um período de trinta dias;\n\ng)	Guia comprovativa de depósito para pagamento da taxa de autorização provisória.",
+                                                    onpressedPdf: () async {
+                                                      final path = 'assets/documents/DUAT.pdf';
+                                                      final file = await PDFApi
+                                                          .loadAsset( path );
+                                                      openPDF( context, file );
+                                                    },
+                                                  )));
                                                 },
                                                 child:
                                                 Column(
@@ -232,11 +252,21 @@ class _document_viewState extends State<document_view> {
                                                 borderRadius: BorderRadius.circular( 20 )),
                                                 clipBehavior: Clip.antiAlias,
                                                 color: Colors.grey[100],
-                                                child: GestureDetector(
+                                                child: InkWell(
                                                   onTap: () async {
-                                                  final path = 'assets/documents/AutorizacaoProvisoria.pdf';
-                                                  final file = await PDFApi.loadAsset( path );
-                                                   openPDF( context, file );
+                                                    Navigator.push(context, MaterialPageRoute(builder: (_) => TextDocuments(
+                                                      textTitle: "Autorização provisória",
+                                                      titletext1: "Autorização provisória",
+                                                      text1: "\nÉ um documento emitido após a apresentação do pedido de uso e aproveitameto da terra. Tem a duração de 5 anos para cidadão nacionais e 2 anos para cidadão estrangeiro, com a taxa de 600 meticais.",
+                                                      titletext2: "",
+                                                      text2: "Conteúdo do autorização provisória:\na)	Identificação da entidade que autorizou o pedido e data do despacho de autorização;\n\nb)	Número da autorização;\n\nc)	Identificação do requerente;\n\nd)	Esboço, área, localização e número de identificação da parcela no registo cadastral;\n\ne)	Prazo da autorização provisória;\n\nf)	Tipo ou tipos de exploração para que foi concedida a autorização;\n\ng)	Taxas devidas;\n\nh)	Data e local da emissão;\n\ni)	Assinatura do responsável pelos serviços que emitem a autorização e respectiva chancela.",
+                                                      onpressedPdf: () async {
+                                                        final path = 'assets/documents/AutorizacaoProvisoria.pdf';
+                                                        final file = await PDFApi.loadAsset( path );
+                                                        openPDF( context, file );
+                                                      },
+                                                    )));
+
                                                   },
                                                   child:
                                                    Column(
@@ -301,14 +331,20 @@ class _document_viewState extends State<document_view> {
                                                   child:
                                                   Column(
                                                       children: [
-                                                        GestureDetector(
+                                                        InkWell(
                                                             onTap: () async {
-                                                              final path = 'assets/documents/titulo.pdf';
-                                                              final file = await PDFApi
-                                                                  .loadAsset(
-                                                                  path );
-                                                              openPDF( context,
-                                                                  file );
+                                                              Navigator.push(context, MaterialPageRoute(builder: (_) => TextDocuments(
+                                                                textTitle: "Titulação do DUAT",
+                                                                titletext1: "Processo de titulação do DUAT\n",
+                                                                text1: "Titulo é emitido pelos Servicos Publicos de Cadastro,gerais ou urbanos, que comprova o direito de uso e aproveitamento da terra, inclui o parecer das actividades administrativas locais, e consulta as respectivas comunidades,",
+                                                                titletext2: "Elementos que constaram no  título:\n",
+                                                                text2: "a)	Identificação da entidade que autorizou o pedido de  emissão do título e data do despacho de autorização;\n\nb)	Número do título;\n\nc)	Identificação do titular;\n\nd)	Área e sua definição geométrica, com as respectivas coordenadas, localização, números de identificação das parcelas confrontantes;\n\ne)	Prazo a que estiver sujeito o direito de uso e aproveitamento da terra;\n\nf)	Tipo ou tipos de exploração para que foi adquirido o direito de uso e aproveitamento da terra;\n\ng)	Descrição das benfeitorias existentes;\n\nh)	Taxas devidas;\n\ni)	Data e local da emissão;\n\nAssinatura do responsável pelos Serviços que emitem o título e respectiva chancela",
+                                                                onpressedPdf: () async {
+                                                                  final path = 'assets/documents/titulo.pdf';
+                                                                  final file = await PDFApi.loadAsset( path );
+                                                                  openPDF( context, file );
+                                                                },
+                                                              )));
                                                             },
                                                             child:
                                                             ListTile(
@@ -320,14 +356,20 @@ class _document_viewState extends State<document_view> {
                                                               title: const Text(
                                                                   'Titulação do DUAT' ),
                                                             ) ),
-                                                        GestureDetector(
+                                                        InkWell(
                                                             onTap: () async {
-                                                              final path = 'assets/documents/Direitosdostitulares.pdf';
-                                                              final file = await PDFApi
-                                                                  .loadAsset(
-                                                                  path );
-                                                              openPDF( context,
-                                                                  file );
+                                                              Navigator.push(context, MaterialPageRoute(builder: (_) => TextDocuments(
+                                                                textTitle: "Direitos dos titulares",
+                                                                titletext1: "Direitos dos titulares",
+                                                                text1: "Direitos dos titulares do direito de uso e aproveitamento da terra, seja adquirido por ocupação, seja por autorização de um pedido:\n\na)	Defender –se contra qualquer intrusão de uma segunda parte;\n\nb)	Ter acesso à sua parcela e aos recursos hídricos de uso público através das parcelas vizinhas, constituindo para o efeito as necessárias servidões.\n\nc)	Os requerentes ou titulares do direito de uso e aproveitamento da terra podem apresentar certidão da autorização provisória ou do título às instituições de crédito, no contexto de pedido de empréstimos.",
+                                                                titletext2: "",
+                                                                text2: "",
+                                                                onpressedPdf: () async {
+                                                                  final path = 'assets/documents/Direitosdostitulares.pdf';
+                                                                  final file = await PDFApi.loadAsset( path );
+                                                                  openPDF( context, file );
+                                                                },
+                                                              )));
                                                             },
                                                             child:
                                                             ListTile(
@@ -339,14 +381,20 @@ class _document_viewState extends State<document_view> {
                                                               title: const Text(
                                                                   'Direitos dos titulares' ),
                                                             ) ),
-                                                        GestureDetector(
+                                                        InkWell(
                                                             onTap: () async {
-                                                              final path = 'assets/documents/deveresDuat.pdf';
-                                                              final file = await PDFApi
-                                                                  .loadAsset(
-                                                                  path );
-                                                              openPDF( context,
-                                                                  file );
+                                                              Navigator.push(context, MaterialPageRoute(builder: (_) => TextDocuments(
+                                                                textTitle: "Deveres dos titulares do DUAT:",
+                                                                titletext1: "Deveres dos titulares do DUAT:",
+                                                                text1: "",
+                                                                titletext2: "",
+                                                                text2: "a)	Utilizar a terra respeitando os princípios definidos na Constiuição e demais legislação em vigor e  no caso do exercício de actividades económicas em conformidade com os planos de exploração. \n\nb)	Dar acesso através da sua parcela aos vizinhos que não tenham comunicação com a via pública ou com os recursos hídricos de uso público. \n\nc)	Respeitar as servidões relativas a vias de acesso público ou comunitário e passagens para o gado, estabelecidas por práticas costumeiras; \n\nd)	Permitir a execução de operações e/ou instalação de acessórios e equipamento conduzidas ao abrigo de lincença de prospecções e pesquisa mineira, concessão mineira ou certificado mineiro, mediante justa indeminização; \n\ne)	Manter os marcos de fronteiras, de triangulação, de demarcação cadastral e outros que sirvam de pontos de referência;",
+                                                                onpressedPdf: () async {
+                                                                  final path = 'assets/documents/deveresDuat.pdf';
+                                                                  final file = await PDFApi.loadAsset( path );
+                                                                  openPDF( context, file );
+                                                                },
+                                                              )));
                                                             },
                                                             child:
                                                             ListTile(
@@ -374,12 +422,20 @@ class _document_viewState extends State<document_view> {
                                               ),
                                               clipBehavior: Clip.antiAlias,
                                               color: Colors.grey[100],
-                                              child: GestureDetector(
+                                              child: InkWell(
                                                 onTap: () async {
-                                                  final path = 'assets/documents/ParecerAdministrativo.pdf';
-                                                  final file = await PDFApi
-                                                      .loadAsset( path );
-                                                  openPDF( context, file );
+                                                  Navigator.push(context, MaterialPageRoute(builder: (_) => TextDocuments(
+                                                    textTitle: "Parecer da Administração",
+                                                    titletext1: "Parecer da Administração do Distrito e consulta às comunidades locais",
+                                                    text1: "",
+                                                    titletext2: "",
+                                                    text2: "Parecer da administração o distrito e consulta às comunidades locais falado no do processo relativo DUART adquirida por ocupação:\n\n1.	Os serviços de Cadastro envirão ao Administrador do respectivo distrito um exemplar do pedido, para efeitos de afixação do respectivo Edital e obtenção do seu parecer, prestando-lhe a assistência técnica necessária para a recolha de informações sobre o terreno pretendido e os terrenos limítrofes.\n\n2.	Será feito um trabalho conjunto, envolvendo os Serviços de Cadastro, o Administrador do Distrito ou seu representante e as comunidades locais. O resultado desse trabalho será reduzido a escrito e assinado por um minimo de três e um máximo de nove representantes da comunidade local, bem como pelos titulares ou ocupantes dos terrenos limítrofes.\n\n3.	O parecer do Administrador do Distrito incidirá sobre a existência ou não, na área requerida, do DUAT adquirido por ocupação. Caso sobre a área requerida recaiam outros direitos, o parecer incluirá os termos pelos quais se regerá a parceria entre os titulares do direito de uso e aproveitamento da terra adquirido por ocupação e o requerente.\n\n\nTaxas referentes ao parecer Administrativo e consulta as comunidades locais",
+                                                    onpressedPdf: () async {
+                                                      final path = 'assets/documents/ParecerAdministrativo.pdf';
+                                                      final file = await PDFApi.loadAsset( path );
+                                                      openPDF( context, file );
+                                                    },
+                                                  )));
                                                 },
                                                 child:
                                                 Column(
@@ -406,12 +462,20 @@ class _document_viewState extends State<document_view> {
                                               ),
                                               clipBehavior: Clip.antiAlias,
                                               color: Colors.grey[100],
-                                              child: GestureDetector(
+                                              child: InkWell(
                                                 onTap: () async {
-                                                  final path = 'assets/documents/Demarcação.pdf';
-                                                  final file = await PDFApi
-                                                      .loadAsset( path );
-                                                  openPDF( context, file );
+                                                  Navigator.push(context, MaterialPageRoute(builder: (_) => TextDocuments(
+                                                    textTitle: "Demarcação",
+                                                    titletext1: "Processo técnico relativo à  demarcação",
+                                                    text1: "1.	Emitida a autorização provisória, os Serviços de Cadastro notificarão o requerente para a comunicação do despacho e para a necessidade de fazer a demarcação;\n\n2.	Após a notificação, o requente deverá proceder à demarcação no prazo de um ano, seja por via oficial, através dos Serviços de Cadastro.\n\n3.	Findo o prazo de um ano sem que tenha sido apresentado o respectivo processo técnico e não tenha sido recebida uma justificação aceitável pelos Serviços de Cadastro, estes notificarão o requerente do iminente cancelamento da autorização provisória.\n\n4.	O requerente poderá solicitar que, em vez do cancelamento, lhe seja prorrogado o prazo por mais noventa dias. Este segundo prazo é improrrogável.",
+                                                    titletext2: "",
+                                                    text2: "",
+                                                    onpressedPdf: () async {
+                                                      final path = 'assets/documents/Demarcação.pdf';
+                                                      final file = await PDFApi.loadAsset( path );
+                                                      openPDF( context, file );
+                                                    },
+                                                  )));
                                                 },
                                                 child:
                                                 Column(
@@ -420,36 +484,34 @@ class _document_viewState extends State<document_view> {
                                                         leading: Icon(
                                                           Icons.picture_as_pdf,
                                                           color: Colors.red, ),
-                                                        title: const Text(
-                                                            'Demarcação' ),
-                                                        subtitle: Text(
-                                                          'Processo técnico relativo à  demarcação',
-                                                          style: TextStyle(
-                                                              color: Colors
-                                                                  .black
-                                                                  .withOpacity(
-                                                                  0.6 ) ), ),
-                                                      )
-                                                    ]
-                                                ),
-                                              ),
-                                            ), ), Container(
+                                                        title: const Text('Demarcação'),
+                                                        subtitle: Text('Processo técnico relativo à  demarcação',
+                                                          style: TextStyle(color: Colors.black.withOpacity(0.6)),),)
+                                                    ]),
+                                              ),),),
+                                          Container(
                                             alignment: Alignment.center,
                                             child:
                                             Card(
                                               shadowColor: Colors.red,
                                               shape: RoundedRectangleBorder(
-                                                borderRadius: BorderRadius
-                                                    .circular( 20 ),
-                                              ),
+                                              borderRadius: BorderRadius.circular( 20 ),),
                                               clipBehavior: Clip.antiAlias,
                                               color: Colors.grey[100],
-                                              child: GestureDetector(
+                                              child: InkWell(
                                                 onTap: () async {
-                                                  final path = 'assets/documents/ValordasTaxas.pdf';
-                                                  final file = await PDFApi
-                                                      .loadAsset( path );
-                                                  openPDF( context, file );
+                                                  Navigator.push(context, MaterialPageRoute(builder: (_) => TextDocuments(
+                                                    textTitle: "Valor das Taxas",
+                                                    titletext1: "Valor das Taxas",
+                                                    text1: "1.Emitida a autorização provisória, os Serviços de Cadastro notificarão o requerente para a comunicação do despacho e para a necessidade de fazer a demarcação;\n\n 2.Após a notificação, o requente deverá proceder à demarcação no prazo de um ano, seja por via oficial, através dos Serviços de Cadastro.\n\n3.Findo o prazo de um ano sem que tenha sido apresentado o respectivo processo técnico e não tenha sido recebida uma justificação aceitável pelos Serviços de Cadastro, estes notificarão o requerente do iminente cancelamento da autorização provisória.\n\n 4.O requerente poderá solicitar que, em vez do cancelamento, lhe seja prorrogado o prazo por mais noventa dias. Este segundo prazo é improrrogável.",
+                                                    titletext2: "",
+                                                    text2: "",
+                                                    onpressedPdf: () async {
+                                                      final path = 'assets/documents/ValordasTaxas.pdf';
+                                                      final file = await PDFApi.loadAsset( path );
+                                                      openPDF( context, file );
+                                                    },
+                                                  )));
                                                 },
                                                 child:
                                                 Column(
@@ -539,7 +601,7 @@ class _document_viewState extends State<document_view> {
               }
             });
             if (currentIndex == 3) {
-              Navigator.push( context,
+              Navigator.push(context,
                   MaterialPageRoute( builder: (_) =>
                       SignIn(
                         index: currentIndex, logged: isVisibleLogin, ) ) );

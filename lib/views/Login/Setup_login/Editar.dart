@@ -583,6 +583,8 @@ String _valueCargo;
 
   }}
 
+
+
   void updateUserDatatoOb() async{
     User firebaseUser = auth.currentUser;
     ClassModeloUsuario userModel = new ClassModeloUsuario();
@@ -607,7 +609,7 @@ String _valueCargo;
 
     Fluttertoast.showToast(msg: "Editado");
     //await FirebaseUtils.updateFirebaseToken();
-    Navigator.push(context, MaterialPageRoute(builder: (context)=>Perfil_Home_view()));
+    Navigator.push(context, MaterialPageRoute(builder: (context)=>Perfil_Home_view(id: firebaseUser.uid,)));
 
    // sendVerificationEmail();
   }

@@ -3,11 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:projecto_licenciatura/Animations/fade_animation.dart';
+import 'package:projecto_licenciatura/controllers/UserNotifier.dart';
 import 'package:projecto_licenciatura/controllers/staticSignApi.dart';
+import 'package:projecto_licenciatura/controllers/userController.dart';
 import 'package:projecto_licenciatura/views/Login/Setup_login/Validation.dart';
 import 'package:projecto_licenciatura/views/Login/Setup_login/signIn.dart';
 import 'package:projecto_licenciatura/views/Post/Post_screen/Post_home_view.dart';
 import 'package:projecto_licenciatura/views/constantsFields.dart';
+import 'package:provider/provider.dart';
 
 
 
@@ -115,7 +118,7 @@ class _SignUpConstrutorState extends State<SignUpConstrutor> {
                                                             function: (String  value){setState(() {_email.text = value;});})),
                                                         FadeAnimation( 1.4,Widgetsclass.makeinputSenha(
                                                             label:"Senha",
-                                                            ///readonly: false,
+                                                            readonly: false,
                                                             seePassword: seePassword,
                                                             funtionSenha: (){ setState((){seePassword = !seePassword;});},
                                                             icon:Icon( Icons.lock,color: Constants.KDefaultIconcolor,),
@@ -123,7 +126,7 @@ class _SignUpConstrutorState extends State<SignUpConstrutor> {
                                                         )),
                                                         FadeAnimation( 1.5,Widgetsclass.makeinputSenha(
                                                             label:'confirme a senha',
-                                                            //readonly: false,
+                                                            readonly: false,
                                                             icon:Icon( Icons.lock,color: Constants.KDefaultIconcolor,),
                                                             seePassword: seePassword,
                                                             function: (value){setState(() { _confirmPass.text = value; });},
@@ -378,6 +381,7 @@ class _SignUpConstrutorState extends State<SignUpConstrutor> {
   async{
     UserCredential user;
     FirebaseAuth auth = FirebaseAuth.instance;
+    UserNotifier userNotifier = Provider.of<UserNotifier>(context, listen: false);
     if(_formkey.currentState.validate()) {
 
       setState(() {
@@ -392,7 +396,7 @@ class _SignUpConstrutorState extends State<SignUpConstrutor> {
             });
         FirebaseUtils.postUserDatatoOb(
             nome: _nome.text,
-            tipoUsuario: "Profissional",
+            tipoUsuario: widget.tipo,
             email: _email.text,
             senha: _pass.text,
             confPassword:_confirmPass.text,
@@ -404,10 +408,12 @@ class _SignUpConstrutorState extends State<SignUpConstrutor> {
             provincia: _provincia,
             localidade: _localidade,
             cargo: _valueCargo,
-            context: context,index: widget.index);
+            context: context,
+            index: widget.index,userNotifier: userNotifier);
+            getUser(userNotifier);
         Navigator.pushAndRemoveUntil(
             context,
-            MaterialPageRoute(builder: (_) => SignIn(index: widget.indexSignIn,)),
+            MaterialPageRoute(builder: (_) => SignIn(index: widget.indexSignIn, logged: true,)),
                 (Route<dynamic> route) => false);
 
       }).catchError((onError) {

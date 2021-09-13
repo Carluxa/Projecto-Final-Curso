@@ -139,6 +139,13 @@ static getTipoUsuario(String tipoUsuario)async
    .get();
  // .where('tipoUsuario', isEqualTo: tipoUsuario)
 }
+  // static Stream<List<ClassModeloUsuario>> getUserBase(String idUser){
+  //   User user = FirebaseAuth.instance.currentUser;
+  //   FirebaseFirestore.instance
+  //       .collection('usuarios')
+  //       .doc(user.uid)
+  //       .snapshots();
+  // }
 
   static void postUserDatatoOb(
       {
@@ -146,7 +153,7 @@ static getTipoUsuario(String tipoUsuario)async
         String bi, String telefone,String dataDNas,
         String nrCasa,String quarteirao, String provincia,
         String localidade, String cargo, String tipoUsuario,
-        String confPassword,String bio,context,index
+        String confPassword,String bio,context,index, UserNotifier userNotifier
       }) async{
     User firebaseUser =   FirebaseAuth.instance.currentUser;
     ClassModeloUsuario userModel = new ClassModeloUsuario();
@@ -171,6 +178,9 @@ static getTipoUsuario(String tipoUsuario)async
         .collection("usuarios")
         .doc(firebaseUser.uid)
         .set(userModel.toMap());
+
+      userNotifier.addUser(userModel.toMap());
+
 
     Fluttertoast.showToast(msg: "Register Success");
   //  await FirebaseUtils.updateFirebaseToken();

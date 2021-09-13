@@ -73,6 +73,7 @@ class _EditarPostState extends State<EditarPost> {
     // TODO: implement dispose
     super.dispose();
   }
+  User user = FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     PostNotifier postNotifier = Provider.of<PostNotifier>(context,listen: false);
@@ -89,7 +90,7 @@ class _EditarPostState extends State<EditarPost> {
                     IconButton(icon: Icon(Icons.close), onPressed: (){_show_ChoiCeDialogExit(context);}),
                     Text(widget.label,style: TextStyle(fontWeight: FontWeight.bold),),
                     GestureDetector(
-                      onTap: (){Navigator.push(context, MaterialPageRoute(builder: (_)=>Perfil_Home_view()));},
+                      onTap: (){Navigator.push(context, MaterialPageRoute(builder: (_)=>Perfil_Home_view(id: user.uid,)));},
                       child: Container(width: 40,height: 40,child: CircleAvatar(radius: 80, child: Text(widget.nome['nome'][0],style: TextStyle(color: Colors.green,fontSize: 25),),backgroundColor: Colors.green[100],),
                       ),
                     )],

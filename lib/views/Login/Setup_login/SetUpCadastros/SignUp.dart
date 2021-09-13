@@ -1,6 +1,5 @@
 
 import 'package:flutter/material.dart';
-import 'package:projecto_licenciatura/views/Login/Setup_login/SetUpCadastros/signUpInterressados.dart';
 import 'package:projecto_licenciatura/views/Login/Setup_login/SetUpCadastros/signUpProfissionais.dart';
 import 'package:projecto_licenciatura/views/Login/Setup_login/Validation.dart';
 import 'package:projecto_licenciatura/views/constantsFields.dart';
@@ -95,7 +94,7 @@ class _SignUpState extends State<SignUp> {
                                                                                         Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpConstrutor(indexSignIn:widget.index,index:0,label: "Cadastro",logged: widget.logged,dataReceive:widget.dataReceive,tipo: _valueCargo,)));
                                                                                       }
                                                                                       if(value=="Cliente"){
-                                                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpConstrutor(indexSignIn:widget.index,index:1,label:"Cadastro",logged: widget.logged,dataReceive:widget.dataReceive)));
+                                                                                        Navigator.push(context, MaterialPageRoute(builder: (context)=>SignUpConstrutor(indexSignIn:widget.index,index:1,label:"Cadastro",logged: widget.logged,dataReceive:widget.dataReceive,tipo: _valueCargo,)));
                                                                                       }
                                                                                       _valueCargo = value;
                                                                                       print("o valor do Campo é $_valueCargo");

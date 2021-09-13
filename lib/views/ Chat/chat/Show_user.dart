@@ -9,6 +9,7 @@ import 'package:projecto_licenciatura/views/Documentos/documentos_view.dart';
 import 'package:projecto_licenciatura/views/constantsFields.dart';
 
 
+// ignore: camel_case_types
 class show_user extends StatefulWidget {
 
  // bool logged;
@@ -19,6 +20,7 @@ class show_user extends StatefulWidget {
   _show_userState createState() => _show_userState();
 }
 
+// ignore: camel_case_types
 class _show_userState extends State<show_user> {
 
   int _currentIndex = 0;
@@ -87,7 +89,7 @@ class _show_userState extends State<show_user> {
                                                                       Chat(
                                                                         chatRoomId:userData.data()['userId'],
                                                                         nome: userData.data()['nome'],
-                                                                        idFrom: userData.data()['userId'],
+                                                                        idTo: userData.data()['userId'],
                                                                         //snapshotUser: userData[index]
                                                                       )));
                                                             } );
@@ -96,8 +98,7 @@ class _show_userState extends State<show_user> {
                                                             leading: CircleAvatar(
                                                               backgroundColor: Colors.orange[100],child: Text(userData.data()['nome'][0],style: TextStyle(fontSize: 30,color: Colors.black ),),  ),
                                                             title: Text(userData.data( )['nome']),
-                                                            subtitle: Text(naoIdentificado
-                                                                ? userData.data()['cargo'] : 'cargo nao Identificado',
+                                                            subtitle: Text(userData.data()['cargo']==null?'cliente':userData.data()['cargo'],
                                                               style: TextStyle(
                                                                   color: Colors.black.withOpacity(0.6 ) ), ),
                                                           ),
@@ -106,7 +107,7 @@ class _show_userState extends State<show_user> {
                                                 ),
                                               ):Container();
                                             },
-                                          ) ) : CircularProgressIndicator( );
+                                          ) ) : Center(child: CircularProgressIndicator(backgroundColor: Colors.green, strokeWidth: 2, ));
                                     }
                                 ),
                               ] ),

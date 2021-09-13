@@ -78,7 +78,7 @@ class _post_Add_viewState extends State<post_Add_view> {
                          IconButton(icon: Icon(Icons.close), onPressed: (){show_choicedialogexit(context);}),
                          Text(widget.label,style: TextStyle(fontWeight: FontWeight.bold),),
                           GestureDetector(
-                            onTap: (){Navigator.push(context, MaterialPageRoute(builder: (_)=>Perfil_Home_view()));},
+                          //  onTap: (){Navigator.push(context, MaterialPageRoute(builder: (_)=>Perfil_Home_view()));},
                             child: Container(width: 40,height: 40,child: CircleAvatar(radius: 80, child: Text(widget.nome['nome'][0],style: TextStyle(color: Colors.green,fontSize: 25),),backgroundColor: Colors.green[100],),
                             ),
                           )],

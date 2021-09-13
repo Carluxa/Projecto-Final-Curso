@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:projecto_licenciatura/Animations/fade_animation.dart';
+import 'package:projecto_licenciatura/controllers/UserNotifier.dart';
+import 'package:projecto_licenciatura/controllers/userController.dart';
 import 'package:projecto_licenciatura/views/%20Chat/chat/Show_user.dart';
 import 'package:projecto_licenciatura/views/Login/Setup_login/SetUpCadastros/SignUp.dart';
 import 'package:projecto_licenciatura/controllers/staticSignApi.dart';
@@ -11,6 +13,7 @@ import 'package:projecto_licenciatura/views/Login/Setup_login/Validation.dart';
 import 'package:projecto_licenciatura/views/Perfil_componets/Perfil_Home-view_componets.dart';
 import 'package:projecto_licenciatura/views/Post/Post_screen/Post_home_view.dart';
 import 'package:projecto_licenciatura/views/constantsFields.dart';
+import 'package:provider/provider.dart';
 
 enum authProblems { UserNotFound, PasswordNotValid, NetworkError }
 // ignore: must_be_immutable
@@ -50,19 +53,19 @@ class _SignInState extends State<SignIn> {
 
   @override
   void initState() {
-  //  print(snp);
-    //FirebaseUtils.checkcurrentUserM(snp: snp);
-    // TODO: implement initState
+    UserNotifier userNotifier = Provider.of<UserNotifier>(context, listen: false);
+    getUser(userNotifier);
+    print("------------------->${userNotifier.userList}");
     super.initState();
     checkcurrentUserM();
   }
-
+  User user = FirebaseAuth.instance.currentUser;
    @override
   Widget build(BuildContext context) {
     return Scaffold(
       body:
-           widget.index==1?!widget.logged?bodyMethod(): Post_home_view(snpData: widget.dataReceive,):
-               widget.index==2?!widget.logged?bodyMethod():Perfil_Home_view(snp:widget.dataReceive,):
+           widget.index==1?!widget.logged?bodyMethod(): Post_home_view(snpData: widget.dataReceive, ):
+               widget.index==2?!widget.logged?bodyMethod():Perfil_Home_view(id:user.uid):
                    widget.index==3?!widget.logged?bodyMethod():show_user():Text("am Out")
     );
   }
@@ -169,7 +172,7 @@ class _SignInState extends State<SignIn> {
         } else if (widget.index == 2) {
           Navigator.push( context,
               MaterialPageRoute( builder: (_) =>
-                  Perfil_Home_view( snp: snp, ) ) );
+                  Perfil_Home_view(id:user.uid)));
         } else if (widget.index == 3) {
           Navigator.push( context,
               MaterialPageRoute( builder: (_) => show_user( ) ) );

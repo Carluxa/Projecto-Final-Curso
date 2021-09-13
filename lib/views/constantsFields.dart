@@ -246,7 +246,7 @@ static message({text})
               fontSize: 20),),),);
   }
 
-  static Widget appBarMain(BuildContext context,{nome}) {
+  static Widget appBarMain(BuildContext context,{nome,idUser}) {
     return
       AppBar(
         elevation: 0,
@@ -277,7 +277,7 @@ static message({text})
                     children: <Widget>[
                       GestureDetector(
                           onTap:(){ Navigator.push(
-                              context, MaterialPageRoute( builder: (_) => Perfil_Home_view())
+                              context, MaterialPageRoute( builder: (_) => Perfil_Home_view(id: idUser,))
                           );},
                           child: Text(nome,style: TextStyle(fontWeight: FontWeight.w600),)),
                       SizedBox(height: 6,),

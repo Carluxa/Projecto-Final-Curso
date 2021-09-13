@@ -31,15 +31,16 @@ class Widgetsclass{
   }
   static
   //todo nao guarda na db
-  Widget makeinputNumber({label,icon,funtion,help,cargo}) {
+  Widget makeinputNumber({label,icon,funtion,help,numbers}) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Constants.globalformat(label,),
         TextFormField(
+          initialValue: numbers,
           keyboardType: TextInputType.number,
           inputFormatters: <TextInputFormatter>[FilteringTextInputFormatter.digitsOnly,],
-          decoration: Constants.globalformatField(icon,hepiText:help,hint:cargo),
+          decoration: Constants.globalformatField(icon,hepiText:help),
           onChanged: funtion,
           validator: (value){
             if(value.isEmpty)

@@ -56,7 +56,7 @@ class _Post_home_viewState extends State<Post_home_view> {
   bool viewButton = false;
   bool viewtype = false;
  // Post _currentPost;
-
+  User user = FirebaseAuth.instance.currentUser;
   List<Tab>itemCategorias=[
     Tab(text: "Tudo",),
     Tab(text: "Pintura",),
@@ -90,60 +90,6 @@ class _Post_home_viewState extends State<Post_home_view> {
       }});
   }
 
- // int quantcategoriaElectricidade=0;
-
-  //List<String>eleImgeElectricidade;
-  //Iterable<Post> ElectricidadeImagem;
-
-
-    // String userDatas;
-  //   Future<List<QuerySnapshot>> listModelUser=FirebaseFirestore.instance.collection('usuarios' ).snapshots().toList();
-
-    // print("---------------------------$listModelUser");
-     // var streamBuilder = StreamBuilder(
-     //     stream: FirebaseFirestore.instance.collection('usuarios' ).snapshots(),
-     //     builder: (context, userSnapshot) {
-     //       for(int i=0; i<userSnapshot.data.docs.length;i++) {
-     //         DocumentSnapshot userData = userSnapshot.data.docs[i];
-     //
-     //       }
-     //       print("--------------------------------->$userDatas");
-     //       return Text("hello") ;
-     //     });
-     // print(userDatas);
-     // PostNotifier postNotifier = Provider.of<PostNotifier>(context, listen: false );
-     // var snapshot = await FirebaseFirestore.instance.collection('usuarios')
-     //                  .doc().get();
-     // print("${snapshot.data()}");
-  //   Map<String, dynamic> data = snapshot.data();
-  //   if(widget.mapUser['userId']==postNotifier.postList[widget.index].autor)
-  //   {
-  //     nome = widget.mapUser['nome'];
-  //   }
-  //   else{
-  //     nome = data['nome'];
-  //   }
-
-
-
- // print("1---------------------$autor");
-
-// for(int i=0;i<autor.length;i++)
-//   {var ele = autor[i];
-//   print("2------------------------------$ele");
-//     var snapshot = await FirebaseFirestore.instance.collection('usuarios').doc(autor[i]).get();
-//     Map<String, dynamic> dataUs = snapshot.data();
-//     print("3-------------------------------$dataUs");
-//   }
-
-    //quantcategoriaElectricidade = autor.where((element) =>element.contains(dataReceive['userId'])).length;
-    //print(quantcategoriaElectricidade);
-    // setState(() {
-    //   ElectricidadeImagem  = postNotifier.postList.where((element) => element.categoria.contains(dataReceive['userId'])).toList();
-    //   eleImgeElectricidade = ElectricidadeImagem.map((e) => e.image).toList();
-    //   // casaImagem.forEach((element) {element.image;});
-    // });
-
   void initState() {
     super.initState();
     PostNotifier postNotifier = Provider.of<PostNotifier>(context, listen: false);
@@ -161,11 +107,12 @@ class _Post_home_viewState extends State<Post_home_view> {
   }
 
   Future <void> getType() async {
+
     var snapshot = await FirebaseFirestore.instance
         .collection('usuarios')
         .doc(auth.currentUser.uid).get();
     Map<String, dynamic> data = snapshot.data();
-      if(data['tipoUsuario'] == 'Interressado')
+      if(data['tipoUsuario'] == 'Cliente')
       {
         viewtype = true;
       }
@@ -178,8 +125,6 @@ class _Post_home_viewState extends State<Post_home_view> {
 
   @override
   Widget build(BuildContext context) {
-   // PostNotifier postNotifier = Provider.of<PostNotifier>(context,listen: false);
-    //FirebaseUtils firebaseUtils  = Provider.of<FirebaseUtils>(context,listen: false);
     // ignore: cancel_subscriptions
     return   DefaultTabController(
         length: itemCategorias.length,
@@ -191,11 +136,6 @@ class _Post_home_viewState extends State<Post_home_view> {
               appBar: Constants.globalAppBar( context,
           title: Text(
               "Publicações", style: TextStyle( color: Colors.black ) ),
-          // action: [
-          //   // IconButton(
-          //   //     icon: Icon( Icons.search, size: 20, color: Colors.black, ),
-          //   //     onPressed: () {} )
-          // ],
           button:  TabBar(
                   isScrollable: true,
                   indicatorColor: Colors.green,
@@ -203,17 +143,6 @@ class _Post_home_viewState extends State<Post_home_view> {
                   tabs:itemCategorias),
       ),
       body:
-
-
-        // !widget.logged? Consumer<FirebaseUtils>(
-        //     builder: (context,model,child){
-        //       return
-        //          model.isLogin?Visibility(visible: false,
-        //          child: Visibility(visible:isVisibleLogin, child: SignIn(changeStatus:model))):
-        //          Visibility(visible: true,
-        //              child: Visibility(visible:isVisibleLogin, child: SignIn( changeStatus:model)));
-        //     }
-        // ):
        Consumer<PostNotifier>(
              builder: (context,notifier,child){
                return
@@ -246,35 +175,6 @@ class _Post_home_viewState extends State<Post_home_view> {
                  );
    }
 
-/*
-  Widget checkUser (){
-    return
-      StreamBuilder<DocumentSnapshot>(
-          stream: FirebaseFirestore.instance
-              .collection('usuarios')
-              .doc()
-              .snapshots(),
-          builder:
-              (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
-            if (snapshot.hasError) {
-              return Text('Error: ${snapshot.error}');
-            } else if (snapshot.hasData) {
-              return checkRole(snapshot.data);
-            }
-            return null;
-            // return LinearProgressIndicator();
-          });
-  }
-  checkRole(DocumentSnapshot snapshot) {
-    if (snapshot.data == null) {
-      return Center(
-        child: Text('no data set in the userId document in firestore'),
-      );
-    }
-    // ignore: unrelated_type_equality_checks
-
-  }*/
-
   // ignore: non_constant_identifier_names
   Widget ButtonCustom()
   {   PostNotifier postNotifier = Provider.of<PostNotifier>(context);
@@ -306,7 +206,7 @@ class _Post_home_viewState extends State<Post_home_view> {
                   }
                   if (_currentIndex == 2) {
                   Navigator.push( context,
-                  MaterialPageRoute( builder: (_) => Perfil_Home_view(snp:widget.snpData) ) );
+                  MaterialPageRoute( builder: (_) => Perfil_Home_view(id: user.uid) ) );
                   }
                   if (_currentIndex ==3) {
                   Navigator.push( context,
@@ -326,7 +226,7 @@ class _Post_home_viewState extends State<Post_home_view> {
                   Navigator.push( context,MaterialPageRoute( builder: (_) => post_Add_view(nome: dataReceive,label: "Nova Publicação") ) );
                   }
                   if (_currentIndex == 3) {
-                  Navigator.push(context,MaterialPageRoute( builder: (_) => Perfil_Home_view(snp:widget.snpData)));
+                  Navigator.push(context,MaterialPageRoute( builder: (_) => Perfil_Home_view(id: user.uid,)));
                   }
                   if (_currentIndex ==4) {
                   Navigator.push(context,MaterialPageRoute( builder: (_) => show_user()));

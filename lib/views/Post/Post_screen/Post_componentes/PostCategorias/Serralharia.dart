@@ -46,7 +46,7 @@ class _serralharia_categoriaState extends State<serralharia_categoria> {
 
   @override
   Widget build(BuildContext context) {
-    PostNotifier postNotifier = Provider.of<PostNotifier>( context, listen: false );
+
     Future<void>_refreshList()async{
       searchCategoria();
     }

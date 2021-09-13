@@ -20,9 +20,6 @@ static getUserInfo(String email,String idcurrent) async {
       .collection("usuarios")
       .where("email", isEqualTo: email)
       .snapshots();
-  //     .catchError((e) {
-  //   print(e.toString());
-  // });
 }
 
 static Future<bool> addChatRoom(chatRoom, chatsRoomId)
@@ -51,22 +48,6 @@ static getUserChats(String itisMyName) async{
       .where('user',arrayContains: itisMyName).snapshots();
 }
 
-// //method to get all data from firestone and add in a list
-// static getchat(ChatNotifier chatNotifier,idUser) async {
-//   FirebaseFirestore.instance.collection('chats/$idUser/messages').orderBy('time',descending: true).snapshots();
-  // QuerySnapshot snapshot = await  FirebaseFirestore.instance.collection('chats/$idUser/messages').orderBy('time',descending: true).get();
-  // List<ChatUsers> _chatList = [];
-  // snapshot.docs.forEach((document)
-  // {
-  //   ChatUsers  chat = ChatUsers.fromMap(document.data());
-  //   _chatList.add(chat);
-  // });
-  // chatNotifier.postList = _chatList;
-//}
-//chatRoomId id em que foi clicado,
-//idfrom em envio
-//messagem a ser enviada
-// idto para quem sera enviada
 static Future addMessages({String chatRoomId, String idfrom,String idTo, String message}) async {
 ChatUsers chatUsers = ChatUsers();
 chatUsers.messageText=message;

@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:projecto_licenciatura/Animations/fade_animation.dart';
@@ -10,12 +11,12 @@ import 'package:projecto_licenciatura/views/constantsFields.dart';
 
 // ignore: must_be_immutable
 class Editarconstrutor extends StatefulWidget {
-  Map userData;
-  int index;
+  Map userdata;
+  String index;
   String _bio;
  // String label;
 
-  Editarconstrutor({Key key,this.userData,this.index}) : super(key: key);
+  Editarconstrutor({Key key,this.userdata,this.index}) : super(key: key);
 
   @override
   _EditarconstrutorState createState() => _EditarconstrutorState();
@@ -57,7 +58,15 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
         backgroundColor: Colors.green[50],
         appBar: Constants.globalAppBar(context),
         body: isLoading ?  Constants.cirlularProgress():
-        Padding(
+        StreamBuilder(
+            stream: FirebaseFirestore.instance
+                .collection("usuarios")
+                .doc(widget.index)
+                .snapshots(),
+            builder: (context,snapshot) {
+              DocumentSnapshot userData = snapshot.data;
+              return snapshot.hasData ?
+              Padding(
             padding: const EdgeInsets.symmetric( horizontal: 20 ),
             child: Container(
                 child: Column(
@@ -91,12 +100,12 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                                                       FadeAnimation( 1.2, Widgetsclass.makeinputName(
                                                           label:"Bibliografia",
                                                          // icon:Icon(Icons.bio, color:  Constants.KDefaultIconcolor,),
-                                                          nome: widget.userData['bio']==null?"":widget.userData['bio'],
+                                                          nome: userData.data()['bio']==null?"":userData.data()['bio'],
                                                           function: (String value){
                                                             setState(() {
                                                               if(value==null)
                                                               {
-                                                                _bio= widget.userData['bio'];
+                                                                _bio= userData.data()['bio'];
                                                               }
                                                               else
                                                               {_bio= value;
@@ -108,12 +117,12 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                                                       FadeAnimation( 1.2, Widgetsclass.makeinputName(
                                                           label:"Nome",
                                                           icon:Icon(Icons.person, color:  Constants.KDefaultIconcolor,),
-                                                          nome: widget.userData['nome'],
+                                                          nome: userData.data()['nome'],
                                                           function: (String value){
                                                             setState(() {
                                                               if(value==null)
                                                                 {
-                                                                  _nome= widget.userData['nome'];
+                                                                  _nome= userData.data()['nome'];
                                                                 }
                                                               else
                                                                 {_nome= value;
@@ -124,21 +133,21 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                                                       )),
                                                       FadeAnimation( 1.3, Widgetsclass.makeinputEmail(
                                                           label:"Email",
-                                                          nome: widget.userData['email'],
+                                                          nome: userData.data()['email'],
                                                           icon:Icon(Icons.email,color:Constants.KDefaultIconcolor,),
                                                           email: _email,
                                                           hintText: "Por Favor introduza um email válido. ",
                                                           function: (String  value){setState(() {
                                                             if(value==null)
                                                               {
-                                                                _email = widget.userData['email'];
+                                                                _email = userData.data()['email'];
                                                               }else{
                                                               _email = value;
                                                             }
                                                             }
                                                             );})),
                                                       FadeAnimation( 1.4,Widgetsclass.makeinputSenha(
-                                                        senha: widget.userData['senha'],
+                                                        senha: userData.data()['senha'],
                                                         readonly: true,
                                                         label:"Senha",
                                                         helperText:"Campos não Editável",
@@ -148,7 +157,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                                                         //function: (value) {setState((){_pass.text = value;});},
                                                       )),
                                                       FadeAnimation( 1.5,Widgetsclass.makeinputSenha(
-                                                        senha: widget.userData['conSenha'],
+                                                        senha: userData.data()['conSenha'],
                                                         readonly: true,
                                                         helperText:"Campo não Editável",
                                                         label:'confirme a senha',
@@ -172,7 +181,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                                                           children: <Widget>[
                                                             SizedBox(height: 20,),
                                                             FadeAnimation( 1.4,Widgetsclass.makeinputNumberTelefone(
-                                                              telefone: widget.userData['telefone'],
+                                                              telefone: userData.data()['telefone'],
                                                               label:'Telefone ',
                                                               icon:Icon( Icons.phone_android, color: Constants.KDefaultIconcolor,),
                                                               function: (value) {setState(() {
@@ -182,23 +191,23 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                                                                 else{_telefone = value;}});},
                                                             )),
                                                             FadeAnimation( 1.5, makeinputData( "Data de Nascimento",
-                                                                Icon( Icons.date_range, color: Colors.green,), ) ),
+                                                                Icon( Icons.date_range, color: Colors.green,),userData) ),
                                                             FadeAnimation( 1.3, Widgetsclass.makeinputBI(
-                                                              bi: widget.userData['bi'],
+                                                              bi: userData.data()['bi'],
                                                               label:"BI",
                                                               icon:Icon( Icons.insert_drive_file, color: Constants.KDefaultIconcolor,),
                                                               funtion:(String value){
                                                                 setState(() {
                                                                   if(value==null)
                                                                     {
-                                                                      _bi= widget.userData['bi'];
+                                                                      _bi= userData.data()['bi'];
                                                                     }
                                                                   _bi = value;
                                                                 });
                                                               },
                                                             ) ),
                                                             //FadeAnimation(1.7, makeinputProv('Província',Icon(Icons.add_location, color: Colors.green,), elController:_suggestProvinceListController, seList:suggestProvinceList)),
-                                                            FadeAnimation(1.4, makeinputProv()),
+                                                            FadeAnimation(1.4, makeinputProv(userData)),
                                                           ] ),
                                                     )),])),
                                       Container(
@@ -214,7 +223,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                                                       children: <Widget>[
                                                         SizedBox(height: 20,),
                                                         //FadeAnimation(1.1, makeinputAutoCompleteTextField('Localidade',Icon(Icons.add_location, color: Colors.green,),elController:_suggestCityListController, seList:suggestCityList)),
-                                                        makeinputloc(),
+                                                        makeinputloc(userData),
                                                         FadeAnimation( 1.2,Widgetsclass.makeinputNumber(
 
                                                           label:'Número da Casa',
@@ -222,25 +231,25 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                                                           funtion: (value) {
                                                             setState(() {
                                                                     if(value==null) {
-                                                                      _nrCasa = widget.userData['nrCasa'];
+                                                                      _nrCasa = userData.data()['nrCasa'];
                                                                       value=_nrCasa;
                                                                     } else{_nrCasa = value;}});},
                                                           help: "Número da Casa Residente ",
-                                                          cargo:widget.userData['nrCasa'],
+                                                          numbers:userData.data()['nrCasa'],
                                                         ) ),
                                                         FadeAnimation( 1.3, Widgetsclass.makeinputNumber(
-                                                            cargo:widget.userData['quarteirao'],
+                                                            numbers:userData.data()['quarteirao'],
                                                             label:'Quarteirão',
                                                             icon:Icon( Icons.home_outlined, color: Constants.KDefaultIconcolor),
                                                             funtion:(value) {
                                                               setState(() {
-                                                                if(value==null){_quarteirao=widget.userData['quarteirao'];}
+                                                                if(value==null){_quarteirao=userData.data()['quarteirao'];}
                                                                 else{_quarteirao = value;}});},
                                                             help:"Número do seu Quarteirão "
                                                         ) ),
-                                                        FadeAnimation(1.4, makeinputCargo()),
+                                                        FadeAnimation(1.4, makeinputCargo(userData)),
                                                         SizedBox(height: 30,),
-                                                        FadeAnimation(1.5,Constants.makebutton(label: "Gravar",function: (){Editarapi();})
+                                                        FadeAnimation(1.5,Constants.makebutton(label: "Gravar",function: (){Editarapi(userData);})
                                                         )]), ),
                                               ])
                                       ),
@@ -251,9 +260,9 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                     ])
             )
         )
-    );
+    :Container();}));
   }
-  Widget makeinputProv()
+  Widget makeinputProv(DocumentSnapshot userdata)
   {
     return
       Column(
@@ -268,7 +277,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
               padding: EdgeInsets.only(),
               child:
               DropdownButton(
-                hint: Text(widget.userData['provincia']),
+                hint: Text(userdata.data()['provincia']),
                 dropdownColor: Colors.green[50],
                 elevation: 5,
                 icon: Icon(Icons.arrow_drop_down_sharp,color: Constants.KDefaultIconcolor,),
@@ -282,7 +291,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                     }).toList(),
                 onChanged :(value){ setState(() {
                   if(value==null){
-                    _provincia =widget.userData['provincia'];
+                    _provincia =userdata.data()['provincia'];
                   }else{_provincia= value;}});},
               ),
             ),
@@ -290,7 +299,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
           ]
       );
   }
-  Widget makeinputloc()
+  Widget makeinputloc(DocumentSnapshot userdata)
   {
     return
       Column(
@@ -305,7 +314,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
               padding: EdgeInsets.only(),
               child:
               DropdownButton(
-                  hint: Text(widget.userData['localidade']),
+                  hint: Text(userdata.data()['localidade']),
                   dropdownColor: Colors.green[50],
                   elevation: 5,
                   icon: Icon(Icons.arrow_drop_down_sharp,color: Constants.KDefaultIconcolor,),
@@ -315,14 +324,14 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                   value: _localidade,
                   items: Constants.suggestCityList.map((String loc) {return DropdownMenuItem<String>(value:loc,child: Text(loc));}).toList(),
                   onChanged :(value){ setState(() {
-                    if(value==null){_localidade=widget.userData['localidade'];}else{_localidade = value;}});}
+                    if(value==null){_localidade=userdata.data()['localidade'];}else{_localidade = value;}});}
               )),
             SizedBox(height: 5,),
           ]
       );
   }
 
-  Widget makeinputCargo()
+  Widget makeinputCargo(DocumentSnapshot userdata)
   {
     return
       Column(
@@ -337,7 +346,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
               padding: EdgeInsets.only(),
               child:
               DropdownButton<String>(
-                hint: Text(widget.userData['cargo']),
+                hint: userdata.data()['cargo']==null?Text("cliente"):Text(userdata.data()['cargo']),
                 dropdownColor: Colors.green[50],
                 elevation: 5,
                 icon:  Icon(Icons.arrow_drop_down_sharp,color: Constants.KDefaultIconcolor,),
@@ -363,7 +372,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
       );
   }
 
-  makeinputData(String label,icon)
+  makeinputData(String label,icon,DocumentSnapshot userdata)
   {
     return
       Column(
@@ -373,7 +382,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
             TextField(
               //readOnly: true,
               decoration: InputDecoration(
-                hintText:  widget.userData['ddNascimento'],
+                hintText:  userdata.data()['ddNascimento'],
                 hintStyle: TextStyle(color: Colors.black),
                 contentPadding: EdgeInsets.symmetric(vertical: 0, horizontal: 10),
                 enabledBorder: OutlineInputBorder(
@@ -390,7 +399,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
                   ),
                 ),),
               onTap: (){
-                selectTimePicker(context);
+                selectTimePicker(context,userdata);
               },),
             SizedBox(height: 5,),
           ]
@@ -398,7 +407,7 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
   }
 
 
-  Future<Null>selectTimePicker(BuildContext context)async{
+  Future<Null>selectTimePicker(BuildContext context,DocumentSnapshot userdata)async{
     final DateTime picked = await showDatePicker(context: context,
         initialDate: date,
         errorFormatText: "dd/mm/yyyy",
@@ -416,20 +425,20 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
       date = picked;
       if(date==null)
         {
-          _dataDNas= widget.userData['ddNascimento'];
+          _dataDNas= userdata.data()['ddNascimento'];
         }
       else{
         _dataDNas = date.day.toString()+'/'+date.month.toString()+'/'+date.year.toString();
       }});
     }
   }
-  Widget makeinputBio()
+  Widget makeinputBio(DocumentSnapshot userdata)
   {    return
     Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children:[
           TextFormField(
-            initialValue: widget.userData['bio']==null?"Introduza a sua bibliografia":widget.userData['bio'],
+            initialValue: userdata.data()['bio']==null?"Introduza a sua bibliografia":userdata.data()['bio'],
             decoration: InputDecoration(
               border: InputBorder.none,
               focusedBorder: InputBorder.none,
@@ -445,42 +454,42 @@ class _EditarconstrutorState extends State<Editarconstrutor> {
             },
           ),]);
   }
-
+  User user = FirebaseAuth.instance.currentUser;
   // ignore: non_constant_identifier_names
-  Future <void> Editarapi() async {
+  Future <void> Editarapi(DocumentSnapshot userdata) async {
     ClassModeloUsuario usuarioModel = new ClassModeloUsuario();
     if(_formkey.currentState.validate()) {
       setState(() {
         isLoading = true;
         autoValidate = false;
       });
-      if(_bio==null) {usuarioModel.bio = widget.userData['bio'];}else{usuarioModel.bio=_bio;}
-      if(_nome==null) {usuarioModel.nome = widget.userData['nome'];}else{usuarioModel.nome=_nome;}
-      if(_email==null) {usuarioModel.email = widget.userData['email'];}else{usuarioModel.email=_email;}
-      if(_telefone==null) {usuarioModel.telefone = widget.userData['telefone'];}else{usuarioModel.telefone=_telefone;}
-      if(_dataDNas==null) {usuarioModel.ddNascimento = widget.userData['ddNascimento'];}else{usuarioModel.ddNascimento=_dataDNas;}
-      if(_bi==null) {usuarioModel.bi = widget.userData['bi'];}else{usuarioModel.bi=_bi;}
-      if(_provincia==null) {usuarioModel.provincia = widget.userData['provincia'];}else{usuarioModel.provincia=_provincia;}
-      if(_localidade==null) {usuarioModel.localidade = widget.userData['localidade'];}else{usuarioModel.localidade=_localidade;}
-      if(_nrCasa==null) {usuarioModel.nrCasa = widget.userData['nrCasa'];}else{usuarioModel.nrCasa=_nrCasa;}
-      if(_quarteirao==null) {usuarioModel.quarteirao = widget.userData['quarteirao'];}else{usuarioModel.quarteirao=_quarteirao;}
-      if(_valueCargo==null) {usuarioModel.cargo = widget.userData['cargo'];}else{usuarioModel.cargo=_valueCargo;}
+      if(_bio==null) {usuarioModel.bio = userdata.data()['bio'];}else{usuarioModel.bio=_bio;}
+      if(_nome==null) {usuarioModel.nome = userdata.data()['nome'];}else{usuarioModel.nome=_nome;}
+      if(_email==null) {usuarioModel.email = userdata.data()['email'];}else{usuarioModel.email=_email;}
+      if(_telefone==null) {usuarioModel.telefone =userdata.data()['telefone'];}else{usuarioModel.telefone=_telefone;}
+      if(_dataDNas==null) {usuarioModel.ddNascimento = userdata.data()['ddNascimento'];}else{usuarioModel.ddNascimento=_dataDNas;}
+      if(_bi==null) {usuarioModel.bi = userdata.data()['bi'];}else{usuarioModel.bi=_bi;}
+      if(_provincia==null) {usuarioModel.provincia = userdata.data()['provincia'];}else{usuarioModel.provincia=_provincia;}
+      if(_localidade==null) {usuarioModel.localidade = userdata.data()['localidade'];}else{usuarioModel.localidade=_localidade;}
+      if(_nrCasa==null) {usuarioModel.nrCasa = userdata.data()['nrCasa'];}else{usuarioModel.nrCasa=_nrCasa;}
+      if(_quarteirao==null) {usuarioModel.quarteirao = userdata.data()['quarteirao'];}else{usuarioModel.quarteirao=_quarteirao;}
+      if(_valueCargo==null) {usuarioModel.cargo =userdata.data()['cargo'];}else{usuarioModel.cargo=_valueCargo;}
 
-      usuarioModel.tipoUsuario = widget.userData['tipoUsuario'];
-      usuarioModel.senha = widget.userData['senha'];
-      usuarioModel.conSenha = widget.userData['conSenha'];
-      usuarioModel.userId = widget.userData['userId'];
+      usuarioModel.tipoUsuario = userdata.data()['tipoUsuario'];
+      usuarioModel.senha = userdata.data()['senha'];
+      usuarioModel.conSenha =userdata.data()['conSenha'];
+      usuarioModel.userId = userdata.data()['userId'];
 
 
       await FirebaseFirestore.instance.collection( 'usuarios' )
-          .doc( widget.userData['userId'] )
+          .doc( userdata.data()['userId'] )
           .update( usuarioModel.toMap( ) );
 
       Fluttertoast.showToast( msg: "Editado com Sucesso" );
       Navigator.pushAndRemoveUntil(
           context,
           MaterialPageRoute(
-              builder: (_) => Perfil_Home_view(snp: widget.userData)),
+              builder: (_) => Perfil_Home_view(id: user.uid,)),
                          (Route<dynamic> route) => false
                ).catchError((onError) {
                  print('msg: error' + onError.toString());

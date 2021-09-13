@@ -42,7 +42,7 @@ class _PostTitleWithImageState extends State<PostTitleWithImage> {
               // ignore: deprecated_member_use
               FlatButton(onPressed: () => Navigator.push(
                 context, MaterialPageRoute(builder: (context) =>
-                  Perfil_Home_view(),
+                  Perfil_Home_view(id: widget.snapshot['userId'],),
               ),),
                 child:  Text(widget.snapshot['nome'],
                   style:Theme.of(context).

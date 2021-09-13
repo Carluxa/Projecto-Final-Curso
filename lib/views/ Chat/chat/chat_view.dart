@@ -14,10 +14,10 @@ class Chat extends StatefulWidget  {
   String chatRoomId;
   ChatNotifier postNotifier;
   String nome;
-  String idFrom;
+  String idTo;
   Map snapshotUser;
 
-  Chat({this.chatRoomId,this.idFrom,this.snapshotUser,this.nome});
+  Chat({this.chatRoomId,this.idTo,this.snapshotUser,this.nome});
 
   @override
   _ChatState createState() => _ChatState();
@@ -33,52 +33,56 @@ class _ChatState extends State<Chat> {
 
    Widget chatMessages() {
      //ChatNotifier chatNotifier = Provider.of<ChatNotifier>(context,listen: false);
-     return StreamBuilder(
-       stream: FirebaseFirestore.instance
-           .collection("chatsMessages")
-           .doc(widget.chatRoomId)
-           .collection("messages")
-           .orderBy('time',descending: true)
-           .snapshots(),
-       builder: (context,snapshot){
-         return snapshot.hasData && FirebaseAuth.instance.currentUser.uid == snapshot.data.docs['idFrom']?
-         ListView.builder(
-             itemCount: snapshot.data.docs.length,
-             physics: BouncingScrollPhysics(),
-             shrinkWrap: true,
-             reverse: true,
-             itemBuilder:
-                (context, index){
-                  DocumentSnapshot userData = snapshot.data.docs[index];
-              return
-                  // buildItem(index,snapshot.data.docs[index]),
-                    MessageTile(
-                       message: userData.data()['messageText'],
-                       sendByMe: FirebaseAuth.instance.currentUser.uid==userData.data()['idfrom'],
-                     );
-             //  Text(chatNotifier.chatList[index].messageText);
-             }) : Constants.message(text: "Say Hi");
-       },
-     );
-   }//napshot.data.documents[index].data['chatRoomId']
+     return Stack(
+       children: [
+             StreamBuilder(
+                stream: FirebaseFirestore.instance
+                          .collection("chatsMessages")
+                          .doc(widget.chatRoomId)
+                          .collection("messages")
+                          .orderBy('time',descending: true)
+                          .snapshots(),
+                builder: (context,snapshot){
+                return snapshot.hasData ?
+                    //FirebaseAuth.instance.currentUser.uid == snapshot.data.docs['idFrom']?
+                  ListView.builder(
+                     itemCount: snapshot.data.docs.length,
+                     physics: BouncingScrollPhysics(),
+                     shrinkWrap: true,
+                     reverse: true,
+                     itemBuilder:
+                        snapshot.hasData?(context, index){
+                         DocumentSnapshot userData = snapshot.data.docs[index];
+                         return
+                              FirebaseAuth.instance.currentUser.uid==userData.data()['idfrom']?
+                              MessageTile(
+                                  message: userData.data()['messageText'],
+                                  sendByMe: FirebaseAuth.instance.currentUser.uid==userData.data()['idfrom'],
+                              ):Container();
+                      }
+                      :Container(child: Text("Say Something"),)) :
+                             Center(child: CircularProgressIndicator( backgroundColor: Colors.green,strokeWidth: 1,));
+                        //:Constants.message(text: "Say Hi ");
+                  },
+             ),
+        // CircularProgressIndicator(),
 
-
+     ]);
+   }
 
 
   addMessage() {
     if (messageEditingController.text.isNotEmpty) {
       FocusScope.of(context).unfocus();
-      // Map<String, dynamic> chatMessageMap = {
-      //   "sendBy": Constants.myName,
-      //   "message": messageEditingController.text,
-      // };
-      Chat_Controller.addMessages(chatRoomId: widget.chatRoomId,message: messageEditingController.text,idfrom: FirebaseAuth.instance.currentUser.uid,idTo:widget.idFrom );
-
+      Chat_Controller.addMessages(chatRoomId: widget.chatRoomId,message: messageEditingController.text,idfrom: FirebaseAuth.instance.currentUser.uid,idTo:widget.idTo );
+      messageEditingController.text = "";
       setState(() {
-        messageEditingController.text = "";
+       // messageEditingController.clear();
+
       });
     }
   }
+
     @override
     void initState() {
       super.initState();
@@ -88,82 +92,62 @@ class _ChatState extends State<Chat> {
     Widget build(BuildContext context) {
       //ChatNotifier chatNotifier = Provider.of<ChatNotifier>(context,listen: false);
       return Scaffold(
-          appBar: Constants.appBarMain( context, nome: widget.nome, ),
-          body:
-          Stack(
-              children: [
-
-                //Text("hello"),
-             Container(
-                padding: EdgeInsets.symmetric(vertical: 10),
-              alignment: Alignment.topLeft,
-              //height: MediaQuery.of(context).size.h,
-              color: Colors.transparent,
-                child:chatMessages(),
-              ),
-               /* Align(
-                  alignment: Alignment.bottomLeft,
+          appBar:  Constants.appBarMain( context, nome: widget.nome, idUser: widget.idTo ),
+           body:
+      //Column(
+      //       children: [
+      //        Container(
+      //             color: Colors.blue,
+      //             width: 500,
+      //             height: 500,
+      //             child:  SingleChildScrollView(
+      //                 child:
+      //                     Column(
+      //                       children: [
+      //                         Text("Hellooo", style: TextStyle(fontSize: 70, color:  Colors.purple),),
+      //                 Text("Hellooo", style: TextStyle(fontSize: 70, color:  Colors.purple),),
+      //            Text("Hellooo", style: TextStyle(fontSize: 70, color:  Colors.purple),),
+      //     Text("Hellooo", style: TextStyle(fontSize: 70, color:  Colors.purple),),
+      // Text("Hellooo", style: TextStyle(fontSize: 70, color:  Colors.purple),),
+      // Text("Hellooo", style: TextStyle(fontSize: 70, color:  Colors.purple),),
+      //                 Text("Hellooo", style: TextStyle(fontSize: 70, color:  Colors.purple),),
+      //            Text("Hellooo", style: TextStyle(fontSize: 70, color:  Colors.purple),)
+      //                       ],
+      //                     )),
+      //           ),
+      //         Container(
+      //           color: Colors.red,
+      //           width: 500,
+      //           height: 100,
+      //           child: Text("Am HERE",style: TextStyle(fontSize: 30, color:  Colors.yellowAccent),),
+      //         ),
+      //
+      //       ],
+      //      )
+           SingleChildScrollView(
                   child:
-                  Container(
-                    padding: EdgeInsets.only(left: 10,bottom: 10,top: 10),
-                    height: 60,
-                    width: double.infinity,
-                    color:Colors.green,
-                    child:  Row(
-                      children: <Widget>[
-                        GestureDetector(
-                          onTap: (){
-                          },
-                          child: Container(
-                            height: 30,
-                            width: 30,
-                            decoration: BoxDecoration(
-                              color: Colors.lightBlue,
-                              borderRadius: BorderRadius.circular(30),
+                           Column(
+                                 children: [
+                                   Container(
+                                   padding: EdgeInsets.symmetric(vertical: 10),
+                                   alignment: Alignment.topLeft,
+                                   color: Colors.white,
+                                   height: MediaQuery.of(context).size.height/1.3,
+                                   child: chatMessages(),
                             ),
-                            child: Icon(Icons.add, color: Colors.white, size: 20, ),
-                          ),
-                        ),
-                        SizedBox(width: 15,),
-                        Expanded(
-                          child: TextField(
-                            decoration: InputDecoration(
-                                hintText: "Write message...",
-                                hintStyle: TextStyle(color: Colors.black54),
-                                border: InputBorder.none
-                            ),
-                          ),
-                        ),
-                        SizedBox(width: 15,),
-                        FloatingActionButton(
-                          onPressed: (){},
-                          child: Icon(Icons.send,color: Colors.white,size: 18,),
-                          backgroundColor: Colors.blue,
-                          elevation: 0,
-                        ),
-                      ],
-                    ),
-                  ),
-                )*/
-
-                Container(
-                    alignment: Alignment.bottomLeft,
-                    height: MediaQuery.of(context).size.height,
-                    color: Colors.transparent,
-                    child:
                         Container(
                           color: Colors.grey[100],
-                          alignment: Alignment.bottomCenter,
-                          height: MediaQuery.of(context).size.height/9,
+                          alignment: Alignment.bottomLeft,
+                          height: MediaQuery.of(context).size.height/10,
                           padding: EdgeInsets.symmetric(horizontal: 24, vertical: 24),
                           child: Row(
                             children: [
                               Expanded(
                                   child: TextField(
-                                   // textCapitalization: TextCapitalization.sentences,
+                                    textCapitalization: TextCapitalization.sentences,
                                     autocorrect:true,
-                                   // enableSuggestions:true,
-                                  // controller: messageEditingController,
+                                    enableSuggestions:true,
+                                    //controller: messageEditingController,
                                     onChanged: (value){
                                       setState(() {
                                         messageEditingController.text = value;
@@ -196,9 +180,8 @@ class _ChatState extends State<Chat> {
                             ],
                           ),
                         ),
-                      ),
                     ]),
-      );
+      ));
     }
   }
 
@@ -224,25 +207,25 @@ class MessageTile extends StatelessWidget {
             ? EdgeInsets.only(left: 30)
             : EdgeInsets.only(right: 30),
         padding: EdgeInsets.only(
-            top: 15, bottom: 15, left: 20, right: 20),
+            top: 10, bottom: 10, left: 20, right: 20),
         decoration: BoxDecoration(
             borderRadius: sendByMe ? BorderRadius.only(
-                topLeft: Radius.circular(23),
-                topRight: Radius.circular(23),
-                bottomLeft: Radius.circular(23)
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomLeft: Radius.circular(20)
             ) :
             BorderRadius.only(
-                topLeft: Radius.circular(23),
-                topRight: Radius.circular(23),
-                bottomRight: Radius.circular(23)),
+                topLeft: Radius.circular(20),
+                topRight: Radius.circular(20),
+                bottomRight: Radius.circular(20)),
             gradient: LinearGradient(
               colors: sendByMe ? [
-                const Color(0xFFFFB47EDE),
-                const Color(0xFFFFB0BEC5)
+                const Color(0xFF78909c),
+                const Color(0xFF78909c)
               ] 
                   : [
-                const Color(0xFFFF607D8B),
-                const Color(0xFFFF607D8B)
+                const Color(0xFFFFAEDB9F),
+                const Color(0xFFFFAEDB9F)
               ],
             )
         ),

@@ -4,6 +4,7 @@ import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:projecto_licenciatura/controllers/Post_notifier_operaction.dart';
 import 'package:projecto_licenciatura/models/ClassModeloUsuario.dart';
+import 'package:projecto_licenciatura/views/Perfil_componets/Perfil_Home-view_componets.dart';
 import 'package:projecto_licenciatura/views/Post/Post_screen/EditarPost.dart';
 import 'package:projecto_licenciatura/models/Post_model.dart';
 import 'package:projecto_licenciatura/views/Post/Post_screen/Post_componentes/ItemCard_componentes.dart';
@@ -33,6 +34,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   FirebaseAuth auth = FirebaseAuth.instance;
   int quantPost=0;
   TextEditingController nomei =TextEditingController();
+  TextEditingController idNomei =TextEditingController();
   int quant;
   Iterable<Post>ownImagem;
   List<String>eleImgeown;
@@ -112,6 +114,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
       {setState(() {
         id = userDate[i].userId;
         nomei.text = userDate[i].nome;
+        idNomei.text = userDate[i].userId;
         print("============================>${nomei.text}");
       });
           listpostuser=postNotifier.postList.where((element) => element.autor.contains(id)).toList();
@@ -156,6 +159,7 @@ String _seeImage="";
   bool seeImage=true;
   int indexp;
 
+  User user =FirebaseAuth.instance.currentUser;
   @override
   Widget build(BuildContext context) {
     PostNotifier postNotifier = Provider.of<PostNotifier>(context, listen: false );
@@ -194,9 +198,14 @@ String _seeImage="";
                                                          children: [
                                                            Row(
                                                              children: [
-                                                              // CircleAvatar(backgroundColor: Colors.green[100],child: Text(nomei.text[0]),),
+                                                              //CircleAvatar(backgroundColor: Colors.green[100],child: Text(nomei.text[0]),),
                                                                SizedBox(width: 10,),
-                                                               Text(nomei.text),
+                                                               GestureDetector(
+                                                                   onTap: (){
+                                                                    // Navigator.push( context,
+                                                                     //  MaterialPageRoute( builder: (_) => Perfil_Home_view(id: idNomei.text) ));
+                                                                     },
+                                                                   child: Text(nomei.text, style: TextStyle(fontSize: 15),)),
                                                              ],
                                                            ),
 
