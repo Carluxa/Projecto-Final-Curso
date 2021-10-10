@@ -194,6 +194,7 @@ class _document_viewState extends State<document_view> {
                                                         .loadAsset( path );
                                                     openPDF(context, file );
                                                   },
+                                                diagrama: "assets/images/diagramaPng.png",
                                                  )));
                                                 },
                                                 child:

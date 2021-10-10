@@ -58,7 +58,6 @@ class _SignUpState extends State<SignUp> {
                                                 20.0 ), ),
                                           child: ListView(
                                             children:[
-
                                               Padding(padding: EdgeInsets.all( 16.0 ),
                                               child:Container(
                                                   child: Column(
