@@ -134,13 +134,6 @@ class _ItemCardState extends State<ItemCard> {
      setState((){
        isliked = !isliked;
      });
-    // for(int i=0;i<userDate.length;i++)
-    // {
-    //   if(userDate[i].likesip == FirebaseAuth.instance.currentUser.uid)
-    //   {
-    //     isliked = userDate[i].likebool;
-    //   }
-    // }
       likes.likebool = isliked;
       likes.userId = postNotifier.postList[widget.index].autor;
       likes.likesip = FirebaseAuth.instance.currentUser.uid;
@@ -153,7 +146,9 @@ class _ItemCardState extends State<ItemCard> {
          FirebaseFirestore.instance.collection('posts').doc(postNotifier.postList[widget.index].postId).update({'likecount':postNotifier.postList[widget.index].likecount+1});
        }
        else{
-         FirebaseFirestore.instance.collection('posts').doc(postNotifier.postList[widget.index].postId).update({'likecount':postNotifier.postList[widget.index].likecount-=1});
+         FirebaseFirestore.instance.collection('posts').
+         doc(postNotifier.postList[widget.index].postId).
+         update({'likecount':postNotifier.postList[widget.index].likecount-=1});
        }
       //
       // for(int i=0; i<userDate.length;i++)
@@ -204,7 +199,7 @@ class _ItemCardState extends State<ItemCard> {
                      color: Colors.grey[100],
                      borderRadius: BorderRadius.circular( 20 ),
                    ),
-                   child: GestureDetector(
+                   child: InkWell(
                        onTap: widget.press,
                        child: Column(
                            crossAxisAlignment: CrossAxisAlignment.start,

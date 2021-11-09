@@ -250,12 +250,15 @@ class _post_Add_viewState extends State<post_Add_view> {
     postModel.image = imagePassUrl;
     postModel.autor = uid;
     postModel.categoria = _categoria;
-
+    postModel.likecount = 0;
 
     documentReference = await  postRef.add(postModel.toMap());
     postModel.postId =documentReference.id;
-    await FirebaseFirestore.instance.collection('posts').doc(postModel.postId).update(postModel.toMap());
 
+    await FirebaseFirestore.instance
+           .collection('posts')
+           .doc(postModel.postId).set(postModel.toMap());
+    //await FirebaseFirestore.instance.collection('posts').doc(postModel.postId).update(postModel.toMap());
     print({postModel.postId});
 
    // PostNotifier postNotifier = Provider.of<PostNotifier>(context, listen: false);

@@ -26,9 +26,9 @@ class _casa_categoriaState extends State<casa_categoria> {
   searchCategoria() {
     PostNotifier postNotifier = Provider.of<PostNotifier>(context, listen: false );
     List<String> categoria = postNotifier.postList.map((value) => value.categoria).toList();
-    quantcategoriacasa = categoria.where((element) =>element.contains("casa")).length;
+    quantcategoriacasa = categoria.where((element) =>element.contains("construcao")).length;
     setState(() {
-      casaImagem  = postNotifier.postList.where((element) => element.categoria.contains('casa')).toList();
+      casaImagem  = postNotifier.postList.where((element) => element.categoria.contains('construcao')).toList();
       eleImgecasa = casaImagem.map((e) => e.image).toList();
       // casaImagem.forEach((element) {element.image;});
 

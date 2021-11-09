@@ -57,16 +57,17 @@ class _SignInState extends State<SignIn> {
     getUser(userNotifier);
     print("------------------->${userNotifier.userList}");
     super.initState();
+
     checkcurrentUserM();
   }
-  User user = FirebaseAuth.instance.currentUser;
+  User  user = FirebaseAuth.instance.currentUser;
    @override
   Widget build(BuildContext context) {
     return Scaffold(
       body:
            widget.index==1?!widget.logged?bodyMethod(): Post_home_view(snpData: widget.dataReceive, ):
                widget.index==2?!widget.logged?bodyMethod():Perfil_Home_view(id:user.uid):
-                   widget.index==3?!widget.logged?bodyMethod():show_user():Text("am Out")
+                   widget.index==3?!widget.logged?bodyMethod():show_user():Text("")
     );
   }
 

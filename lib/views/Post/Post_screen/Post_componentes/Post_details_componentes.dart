@@ -48,7 +48,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
   Map<String, dynamic> data;
   Map<String, dynamic> userPost;
   Iterable<Post> listpostuser;
-  List<String> listPosts;
+  List<String> listPosts=[""];
   List<String> listwithoutCurrentPost;
 
 
@@ -127,18 +127,7 @@ class _DetailsScreenState extends State<DetailsScreen> {
     }
   }
 
-  /*checkcurrentPostUser(){
-    PostNotifier postNotifier = Provider.of<PostNotifier>(context, listen: false );
 
-    if(widget.mapUser['userId']==postNotifier.postList[widget.index].autor)
-    {
-      nome = widget.mapUser['nome'];
-    }
-    else{
-      nome = userPost['nome'];
-    }
-  }
-*/
   @override
   void initState() {
     PostNotifier postNotifier = Provider.of<PostNotifier>(context, listen: false );
@@ -180,123 +169,135 @@ String _seeImage="";
             "Foto",// data['nome'],
             style: TextStyle( color: Colors.black ), ), ),
         body:
-        postNotifier.postList.length != 0 ?
-        Container(
-               child: Padding(
-                 padding: const EdgeInsets.all( 10.0 ),
-                 child:  Container(
-                                 child: ListView(
-                                   children: [
-                                 Column(
-                                   children: [
-                                     Container(
-                                                   child:
-                                                   Column(
-                                                     children: [
-                                                       Row(
-                                                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                                         children: [
-                                                           Row(
-                                                             children: [
-                                                              //CircleAvatar(backgroundColor: Colors.green[100],child: Text(nomei.text[0]),),
-                                                               SizedBox(width: 10,),
-                                                               GestureDetector(
-                                                                   onTap: (){
-                                                                    // Navigator.push( context,
-                                                                     //  MaterialPageRoute( builder: (_) => Perfil_Home_view(id: idNomei.text) ));
-                                                                     },
-                                                                   child: Text(nomei.text, style: TextStyle(fontSize: 15),)),
-                                                             ],
-                                                           ),
-
-                                                           //SizedBox(width: 200,),
-                                                           // IconButton(icon: Icon(Icons.menu_sharp), onPressed: (){
-                                                           //   return
-                                                            PopupMenuButton<String>(
-                                                               icon:  postNotifier.postList[widget.index].autor==auth.currentUser.uid?Icon(Icons.more_vert):Icon(Icons.more_vert,color: Colors.transparent,),
-                                                               onSelected: (String choise){
-                                                                  if(choise=="Editar")
-                                                                  {    Navigator.push( context, MaterialPageRoute( builder: (_) =>
-                                                                               EditarPost(nome:widget.mapUser,label: "Editar Publicação",index:widget.index)));
-                                                                  }
-                                                                  if(choise=="Remover")
-                                                                  {  dialog(postNotifier
-                                                                  //    _onPostDeleted(postNotifier.currentPost)
-                                                                  );
-                                                                    }},
-                                                               itemBuilder: (BuildContext context) {
-                                                                 return Constants.choices.map(
-                                                                      (String choises) {
-                                                                         return PopupMenuItem<String> (
-                                                                            value: choises,
-                                                                            child: ListTile(
-                                                                                    title: Text(choises)),
-                                                                           );}).toList();}
-                                                               ),
-                                                       ]),
-                                                       Container(
-                                                         width: 400,
-                                                         height: 400,
+        //postNotifier.postList.length == 0
+        postNotifier.postList.length==null ? Center(child: CircularProgressIndicator(backgroundColor: Colors.green, strokeWidth: 2,)):
+            Stack(
+              children: [
+                Container(
+                  child: Padding(
+                   padding: const EdgeInsets.all( 10.0 ),
+                      child:  Container(
+                                       child: ListView(
+                                         children: [
+                                       Column(
+                                         children: [
+                                           Container(
                                                          child:
-                                                         Image.network(_seeImage,
-                                                           fit: BoxFit.cover,),
-                                                       ),
-                                                      Row(
-                                                        children: [
-                                                          Text("${postNotifier.postList[widget.index].likecount}"),
-                                                          Icon(Icons.favorite,color:Colors.red,),
-                                                        ],
-                                                      ),
                                                          Column(
-                                                           mainAxisSize: MainAxisSize.max,
-                                                           crossAxisAlignment:CrossAxisAlignment.stretch ,
                                                            children: [
-                                                             Text(
-                                                                 listStringDesrisao[widget.index],
-                                                                 style: TextStyle( color: Colors.black.withOpacity(0.4))),
-                                                             Text(listStringData[widget.index],style: TextStyle(fontStyle: FontStyle.italic,color: Colors.black.withOpacity(0.4)),),
-                                                           ],
-                                                         ),
-                                                       SizedBox(height: 10,),
-                                                      Column(
-                                                         mainAxisSize: MainAxisSize.max,
-                                                         crossAxisAlignment:CrossAxisAlignment.stretch ,
-                                                         children: [
-                                                           Container (
-                                                             // width: 300,
-                                                             height: 600,
-                                                             child: GridView.builder(
-                                                                 itemCount: listPosts.length,
-                                                                 gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                                                                   childAspectRatio: 0.75,
-                                                                   crossAxisCount: 3,
-                                                                   mainAxisSpacing: 20,
-                                                                   crossAxisSpacing: 20,
+                                                             Row(
+                                                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                                               children: [
+                                                                 Row(
+                                                                   children: [
+                                                                    //CircleAvatar(backgroundColor: Colors.green[100],child: Text(nomei.text[0]),),
+                                                                     SizedBox(width: 10,),
+                                                                     GestureDetector(
+                                                                         onTap: (){
+                                                                           Navigator.push( context,
+                                                                             MaterialPageRoute( builder: (_) => Perfil_Home_view(id: idNomei.text) ));
+                                                                           },
+                                                                         child: Text(nomei.text, style: TextStyle(fontSize: 15),)),
+                                                                   ],
                                                                  ),
-                                                                 itemBuilder: (BuildContext context, int index) {
-                                                                   return Container(
-                                                                       alignment: Alignment.center,
-                                                                       child:
-                                                                       ItemCard(
-                                                                           index:index,
-                                                                           imagem: listPosts[index],
-                                                                           press: () {
-                                                                             setState(() {
-                                                                               Navigator.push(context,
-                                                                                   MaterialPageRoute(
-                                                                                     builder: (context) =>
-                                                                                         DetailsScreen(index: index,  currentPost:widget.currentPost,
-                                                                                             mapUser:widget.mapUser,listElements: widget.listElements,listPost:widget.listPost,),));
-                                                                             });
-                                                                               }
+
+                                                                 //SizedBox(width: 200,),
+                                                                 // IconButton(icon: Icon(Icons.menu_sharp), onPressed: (){
+                                                                 //   return
+                                                                  PopupMenuButton<String>(
+                                                                     icon:  postNotifier.postList[widget.index].autor==auth.currentUser.uid?Icon(Icons.more_vert):Icon(Icons.more_vert,color: Colors.transparent,),
+                                                                     onSelected: (String choise){
+                                                                        if(choise=="Editar")
+                                                                        {    Navigator.push( context, MaterialPageRoute( builder: (_) =>
+                                                                                     EditarPost(nome:widget.mapUser,label: "Editar Publicação",index:widget.index)));
+                                                                        }
+                                                                        if(choise=="Remover")
+                                                                        {  dialog(postNotifier
+                                                                        //    _onPostDeleted(postNotifier.currentPost)
+                                                                        );
+                                                                          }},
+                                                                     itemBuilder: (BuildContext context) {
+                                                                       return Constants.choices.map(
+                                                                            (String choises) {
+                                                                               return PopupMenuItem<String> (
+                                                                                  value: choises,
+                                                                                  child: ListTile(
+                                                                                          title: Text(choises)),
+                                                                                 );}).toList();}
+                                                                     ),
+                                                             ]),
+                                                             Container(
+                                                               width: 400,
+                                                               height: 400,
+                                                               child:
+                                                               Image.network(_seeImage,
+                                                                 fit: BoxFit.cover,),
+                                                             ),
+                                                            Row(
+                                                              children: [
+                                                                Text("${postNotifier.postList[widget.index].likecount}"),
+                                                                Icon(Icons.favorite,color:Colors.red,),
+                                                              ],
+                                                            ),
+                                                               Column(
+                                                                 mainAxisSize: MainAxisSize.max,
+                                                                 crossAxisAlignment:CrossAxisAlignment.stretch ,
+                                                                 children: [
+                                                                   Text(
+                                                                       listStringDesrisao[widget.index],
+                                                                       style: TextStyle( color: Colors.black.withOpacity(0.4))),
+                                                                  /* Text(listStringData[widget.index],
+                                                                     style: TextStyle(
+                                                                         fontStyle: FontStyle.italic,
+                                                                         color: Colors.black.withOpacity(0.4)),),*/
+                                                                 ],
+                                                               ),
+                                                             SizedBox(height: 10,),
+                                                            Column(
+                                                               mainAxisSize: MainAxisSize.max,
+                                                               crossAxisAlignment:CrossAxisAlignment.stretch ,
+                                                               children: [
+                                                                 Container (
+                                                                   // width: 300,
+                                                                   height: 600,
+                                                                   child: GridView.builder(
+                                                                       itemCount: listPosts.length,
+                                                                       gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+                                                                         childAspectRatio: 0.75,
+                                                                         crossAxisCount: 3,
+                                                                         mainAxisSpacing: 20,
+                                                                         crossAxisSpacing: 20,
+                                                                       ),
+                                                                       itemBuilder: (BuildContext context, int index) {
+                                                                         return Container(
+                                                                             alignment: Alignment.center,
+                                                                             child:
+                                                                             ItemCard(
+                                                                                 index:index,
+                                                                                 imagem: listPosts[index],
+                                                                                 press: () {
+                                                                                   setState(() {
+                                                                                     Navigator.push(context,
+                                                                                         MaterialPageRoute(
+                                                                                           builder: (context) =>
+                                                                                               DetailsScreen(index: index,  currentPost:widget.currentPost,
+                                                                                                   mapUser:widget.mapUser,listElements: widget.listElements,listPost:widget.listPost,),));
+                                                                                   });
+                                                                                     }
+                                                                             )
+                                                                         );
+                                                                       }
                                                                        )
-                                                                   );
-                                                                 }
                                                                  )
-                                                           )
-                                                         ])
-                     ]))])]))
-         )): Constants.message(text: "Nao existe nenhum Post"));
+                                                               ])
+                           ]))])]))
+                   )),
+                if(listPosts.length==null)
+                  Center(child: CircularProgressIndicator(backgroundColor: Colors.green, strokeWidth: 2,)),
+              ],
+            ),
+             //Center(child: CircularProgressIndicator(backgroundColor: Colors.green, strokeWidth: 2, ))
+    );
 
   }
   deletePost(PostNotifier postNotifier, Function onPostDeleted) async {

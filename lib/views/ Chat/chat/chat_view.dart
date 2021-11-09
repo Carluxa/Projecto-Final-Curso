@@ -48,9 +48,9 @@ class _ChatState extends State<Chat> {
                   ListView.builder(
                      itemCount: snapshot.data.docs.length,
                      physics: BouncingScrollPhysics(),
-                     shrinkWrap: true,
-                     reverse: true,
-                     itemBuilder:
+                        shrinkWrap: true,
+                        reverse: true,
+                        itemBuilder:
                         snapshot.hasData?(context, index){
                          DocumentSnapshot userData = snapshot.data.docs[index];
                          return

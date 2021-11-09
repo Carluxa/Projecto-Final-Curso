@@ -178,7 +178,7 @@ static message({text})
       title: title,
       leading: IconButton(
         onPressed: () {
-          Navigator.pop( context );
+          Navigator.pop(context);
         },
         icon: Icon( Icons.arrow_back_ios, size: 20, color: Colors.black, ),
       ),

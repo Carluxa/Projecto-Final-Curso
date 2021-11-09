@@ -25,9 +25,9 @@ class _Jardim_categoriaState extends State<Jardim_categoria> {
   searchCategoria() {
     PostNotifier postNotifier = Provider.of<PostNotifier>(context, listen: false );
     List<String> categoria = postNotifier.postList.map((value) => value.categoria).toList();
-    quantcategoriaJardim = categoria.where((element) =>element.contains("Jardim")).length;
+    quantcategoriaJardim = categoria.where((element) =>element.contains("Jardinagem")).length;
     setState(() {
-      jardimImagem  = postNotifier.postList.where((element) => element.categoria.contains('Jardim')).toList();
+      jardimImagem  = postNotifier.postList.where((element) => element.categoria.contains('Jardinagem')).toList();
       eleImgeJardim = jardimImagem.map((e) => e.image).toList();
       // casaImagem.forEach((element) {element.image;});
     });

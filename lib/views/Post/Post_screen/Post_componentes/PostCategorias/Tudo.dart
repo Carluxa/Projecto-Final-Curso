@@ -24,10 +24,10 @@ class _tudo_categoriaState extends State<tudo_categoria> {
 
 
   @override
-  Widget build(BuildContext context) {
+   Widget build(BuildContext context) {
     PostNotifier postNotifier = Provider.of<PostNotifier>(context,listen: false);
     Iterable<Post> listElemen =postNotifier.postList;
-   Future<void>_refreshList()async{
+    Future<void>_refreshList()async{
     getPosts(postNotifier);
    }
 
@@ -51,7 +51,8 @@ class _tudo_categoriaState extends State<tudo_categoria> {
                                 children: [
                                   Expanded(
                                       child: GridView.builder(
-                                            itemCount: postNotifier.postList.length,
+                                          //itemCount: postNotifier.postList.length,
+                                            itemCount: snapshot.data.docs.length,
                                             gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                                             childAspectRatio: 0.75,
                                             crossAxisCount: 2,
@@ -64,7 +65,8 @@ class _tudo_categoriaState extends State<tudo_categoria> {
                                                 child:
                                                 ItemCard(
                                                     index:index,
-                                                    imagem: postNotifier.postList[index].image,
+                                                   // imagem: postNotifier.postList[index].image,
+                                                    imagem: snapshot.data.docs[index].data()['image'],
                                                      press: () =>
                                                         Navigator.push(context,
                                                             MaterialPageRoute(

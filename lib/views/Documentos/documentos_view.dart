@@ -512,6 +512,7 @@ class _document_viewState extends State<document_view> {
                                                       final file = await PDFApi.loadAsset( path );
                                                       openPDF( context, file );
                                                     },
+                                                    tb: "Payments",
                                                   )));
                                                 },
                                                 child:

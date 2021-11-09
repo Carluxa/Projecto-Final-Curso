@@ -47,7 +47,7 @@ class _show_userState extends State<show_user> {
         resizeToAvoidBottomInset: false,
         appBar: Constants.globalAppBar( context,
             title: Text(
-                "Lista de Contactos", style: TextStyle( color: Colors.black ) ),
+                "Lista de Contactos", style: TextStyle( color: Colors.black )),
         ),
         body:Stack(children:[
           Stack(
@@ -107,7 +107,10 @@ class _show_userState extends State<show_user> {
                                                 ),
                                               ):Container();
                                             },
-                                          ) ) : Center(child: CircularProgressIndicator(backgroundColor: Colors.green, strokeWidth: 2, ));
+                                          ) ) : Padding(
+                                            padding: const EdgeInsets.symmetric(vertical: 200),
+                                            child: Center(child: CircularProgressIndicator(backgroundColor: Colors.green, strokeWidth: 2, )),
+                                          );
                                     }
                                 ),
                               ] ),
